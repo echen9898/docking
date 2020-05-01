@@ -18,7 +18,7 @@ Eric Chen and Isaac Perper
 
 ```
 cd src/
-juptyer notebook boat_sim_v2.ipynb
+jupyter notebook boat_sim_v2.ipynb
 ``` 
 
 # Git Usage
