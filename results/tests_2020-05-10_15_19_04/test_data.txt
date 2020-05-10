@@ -1,0 +1,53 @@
+######################## CONSTANTS #######################
+{'C_front': 0.05,
+ 'C_side': 0.4,
+ 'curr_scale': 1,
+ 'd': 7,
+ 'duration': 100,
+ 'h': 2.0,
+ 'l': 8.0,
+ 'm': 15000,
+ 'num_curr_x': 10,
+ 'num_curr_y': 10,
+ 'obstacle_params': array([[list([-40, 40]), list([-40, 20]), 10],
+       [list([60, 0]), list([60, 0]), 5]], dtype=object),
+ 'pad_factor': 1.0,
+ 'rho_w': 1000.0,
+ 'switches': [1, 1, 1, 1],
+ 'thrust_lim_mag': 8000,
+ 'thrust_lim_th': 1.2566370614359172,
+ 'time_interval': 0.5,
+ 'w': 5.0}
+##########################################################
+########################### TESTS ########################
+{'dtol_th': [0, 0, 1],
+ 'dtol_thdot': [0.1, 0.1, 1],
+ 'dtol_x': [0, 0, 1],
+ 'dtol_xdot': [0.1, 0.1, 1],
+ 'dtol_y': [0, 0, 1],
+ 'dtol_ydot': [0.1, 0.1, 1],
+ 'eps': [0.1, 0.01, 2],
+ 'ftol_th': [0.001, 0.001, 1],
+ 'ftol_thdot': [0.01, 0.01, 1],
+ 'ftol_x': [0, 0, 1],
+ 'ftol_xdot': [0.01, 0.01, 1],
+ 'ftol_y': [0, 0, 1],
+ 'ftol_ydot': [0.01, 0.01, 1],
+ 'goal_th': [-1.0471975511965976, -1.0471975511965976, 1],
+ 'goal_x': [-50, -50, 1],
+ 'goal_y': [70, 90, 2],
+ 'maps': ['diagonal_upstream', 'upstream'],
+ 'start_th': [1.5707963267948966, 1.5707963267948966, 1],
+ 'start_x': [0, 0, 1],
+ 'start_y': [50, 50, 1]}
+##########################################################
+
+Trial Number	 Status (FAIL FIRST, FAIL SECOND, SUCCESS)	 Phase 1 Time (s)	 Phase 2 Time (s)	 Total Time (s)
+0000		 SUCCESS				 3.7			 28.9			 32.6
+0001		 SUCCESS				 10.6			 3.4			 14.0
+0002		 SUCCESS				 3.7			 3.0			 6.7
+0003		 SUCCESS				 10.6			 3.4			 14.0
+0004		 SUCCESS				 4.5			 31.4			 35.9
+0005		 SUCCESS				 5.1			 30.9			 36.0
+0006		 FAIL SECOND				 3.9			 84.0			 87.9
+0007		 FAIL SECOND				 5.2			 49.9			 55.1
