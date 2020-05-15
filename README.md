@@ -1,8 +1,7 @@
-# Boat Control
+# Overview
 
-6.832 Spring 2020 Final Project
+Trajectory optimization on a simple autonomous boat for MIT's Underactuated Robotics class (6.832). Spring 2020 Final Project - watch the video [here!](https://www.youtube.com/watch?v=8AD0oO6Yoag)
 Eric Chen and Isaac Perper
-
 
 # Pre-Requisites
 
@@ -21,6 +20,3 @@ cd src/
 jupyter notebook boat_sim_v2.ipynb
 ``` 
 
-# Git Usage
-
-Before pushing changes, make sure to clear all cell outputs in the notebook.  Otherwise you get large file sizes from the figures/animations etc.
