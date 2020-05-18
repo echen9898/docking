@@ -1,4 +1,4 @@
-.DS_Store
+*.DS_Store
 results/.DS_Store
 src/.DS_Store
 src/.ipynb_checkpoints/
