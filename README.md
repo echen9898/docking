@@ -3,7 +3,7 @@ Eric Chen (ericrc@mit.edu) and Isaac Perper (iperper@mit.edu)
 
 # Overview
 
-Trajectory optimization on a simple autonomous boat for MIT's Underactuated Robotics class (6.832). Spring 2020 Final Project - watch the video [here](https://www.youtube.com/watch?v=8AD0oO6Yoag), and read the full report [here!](https://github.com/echen9898/docking/blob/master/paper/6.832%20Report.pdf).
+Trajectory optimization on a simple autonomous boat for MIT's Underactuated Robotics class (6.832). Spring 2020 Final Project - watch the video [here](https://www.youtube.com/watch?v=8AD0oO6Yoag), and read the full report [here!](https://github.com/echen9898/docking/blob/master/paper/6.832%20Report.pdf)
 
 # Pre-Requisites
 
