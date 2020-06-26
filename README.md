@@ -7,18 +7,20 @@ Trajectory optimization on a simple autonomous boat for MIT's Underactuated Robo
 
 # Pre-Requisites
 
+- Make sure you're running python 3.8 (required for PyDrake install)
+
 - PyDrake: [Instructions](https://drake.mit.edu/python_bindings.html#python-bindings-binary)
  - Make sure to add Drake to your python path
 
-- Jupyter Notebook: `pip3 install notebook`
-
-- Matplotlib
-
+- Install dependencies listed in requirements.txt
 
 # Usage
 
+All settings for your simulation can be modified in settings.py.
+
 ```
 cd src/
-jupyter notebook boat_sim_v2.ipynb
+python3 sim.py
 ``` 
 
+Plots and videos are saved in src/results
