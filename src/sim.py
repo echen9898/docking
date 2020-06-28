@@ -110,17 +110,17 @@ if __name__=='__main__':
             solver = SnoptSolver()
         
         if two_phase_optimization:
-            optimal_states_nocurrent, optimal_thrust_nocurrent = solve_optimization(solver, "no_current", obstacles)
-            optimal_states, optimal_thrust = solve_optimization(solver, map_name, obstacles,
+            optimal_states_nocurrent, optimal_thrust_nocurrent, rrt_path = solve_optimization(solver, "no_current", obstacles)
+            optimal_states, optimal_thrust, rrt_path = solve_optimization(solver, map_name, obstacles,
                                                                 state_guess=optimal_states_nocurrent, 
                                                                 thrust_guess=optimal_thrust_nocurrent)
         else:
-            optimal_states, optimal_thrust = solve_optimization(solver, map_name, obstacles)
+            optimal_states, optimal_thrust, rrt_path = solve_optimization(solver, map_name, obstacles)
         
         if optimal_states is not None or optimal_thrust is not None:
             x_opt, y_opt, th_opt, x_dot_opt, y_dot_opt, th_dot_opt = optimal_states.T
             metric_times = np.linspace(0, len(x_opt)*time_interval, len(x_opt))
-            animate_env(x_opt, y_opt, th_opt, x_dot_opt, y_dot_opt, th_dot_opt, metric_times, boat.graphic_rep, obstacles, frame_skip=5)
+            animate_env(x_opt, y_opt, th_opt, x_dot_opt, y_dot_opt, th_dot_opt, metric_times, boat.graphic_rep, obstacles, rrt_path, frame_skip=5)
             plt.figure(2)
             plot_boat_state_and_thrust(optimal_states, # plot optimization metrics
                                        optimal_thrust,
@@ -133,7 +133,7 @@ if __name__=='__main__':
         logger = simulate(start, [0, 0], boat.symbolic_rep, None, duration)
         x_sim, y_sim, th_sim, x_dot_sim, y_dot_sim, th_dot_sim = logger.data()[:6]
         metric_times = logger.sample_times()
-        animate_env(x_sim, y_sim, th_sim, x_dot_sim, y_dot_sim, th_dot_sim, metric_times, boat.graphic_rep, obstacles, frame_skip=20)
+        animate_env(x_sim, y_sim, th_sim, x_dot_sim, y_dot_sim, th_dot_sim, metric_times, boat.graphic_rep, obstacles, rrt_path, frame_skip=20)
 
 
 

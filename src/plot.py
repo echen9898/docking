@@ -159,7 +159,7 @@ def static_plot(x, y, th, x_dot, y_dot, th_dot, metric_times, boat, objects):
     obstacle_graphics = plot_obstacles(objects, n=0, ax=ax1)
     
     # plot position trajectory
-    ax1.plot(x, y)
+    ax1.plot(x, y, label='Optimal Trajectory')
 
     # labels and stylistic attributes min_x - padding_x, max_x + padding_x
     style_plot(ax1, r'$x(t)$', r'$y(t)$', x, y, plot_limits, 'simulation')
@@ -167,12 +167,17 @@ def static_plot(x, y, th, x_dot, y_dot, th_dot, metric_times, boat, objects):
 
     return fig1, ax1, fig2, ax2, [boat_graphic, obstacle_graphics]
 
-def animate_env(x, y, th, x_dot, y_dot, th_dot, metric_times, boat, objects, frame_skip=50):
+def animate_env(x, y, th, x_dot, y_dot, th_dot, metric_times, boat, objects, path_rrt, frame_skip=50):
     '''
     Render a frame by frame animation, and save all figures if specified
     in global parameters.
     '''
     fig1, ax1, fig2, ax2, graphics = static_plot(x, y, th, x_dot, y_dot, th_dot, metric_times, boat, objects)
+
+    # Add RRT path
+    if path_rrt is not None:
+        ax1.plot(path_rrt[0], path_rrt[1], '-r', label='RRT Guess')
+        ax1.legend()
     
     if save_plots: fig1.savefig('{}/trajectory.png'.format(logdir))
         
@@ -202,12 +207,4 @@ def animate_env(x, y, th, x_dot, y_dot, th_dot, metric_times, boat, objects, fra
     
     video = animation.FuncAnimation(fig1, animate, frames=np.arange(0, len(x), frame_skip), interval=200, blit=True)
     if save_plots: video.save('{}/trajectory_video.mp4'.format(logdir)) # save the video
-
-
-
-
-
-
-
-
 

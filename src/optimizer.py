@@ -10,6 +10,7 @@ from pydrake.solvers.mathematicalprogram import GetInfeasibleConstraints
 from settings import *
 from utils import wrap_print
 from dynamics import generate_dynamics
+from RRTStar import RRTStar
 
 
 def get_initial_guess(start, target, duration, time_interval):
@@ -47,14 +48,42 @@ def get_initial_guess(start, target, duration, time_interval):
     # stack position guesses
     traj_guess = np.vstack([state.value(t * time_interval).T for t in range(duration+1)])
     
+    # Get RRT path guess
+    path_rrt_star = None
+    if use_rrt:
+        xm = (xg + xs) / 2
+        ym = (yg + ys) / 2
+        f = 2
+        lb = min(xm-f*shift_x, ym-f*shift_y)
+        ub = max(xm+f*shift_x, ym+f*shift_y)
+        rrt_star = RRTStar(start=start[:2],
+                            goal=target[:2],
+                            bounds=np.array([lb, ub]),
+                            obstacle_list=obstacle_params,
+                            max_iter=rrt_iters)
+        path_rrt_star, min_cost = rrt_star.plan()
+        path_rrt_star = np.vstack([pt for pt in path_rrt_star[::-1]]).T
+        time_limits_rrt = np.linspace(time_limits[0], time_limits[1], path_rrt_star.shape[1])
+        pos = PiecewisePolynomial.FirstOrderHold(time_limits_rrt, path_rrt_star)
+
+        pos_guess = np.vstack([pos.value(t * time_interval).T for t in range(duration+1)])
+        traj_guess[:, :2] = pos_guess[:, :]
+        wrap_print("RRT Path Found")
+
+
     # add constant velocity guesses
     x_dot_guess = (traj_guess[-1, 0] - traj_guess[0, 0])/((duration+1)*time_interval)
     y_dot_guess = (traj_guess[-1, 1] - traj_guess[0, 1])/((duration+1)*time_interval)
     th_dot_guess = 0.0
     
     for t in range(duration+1):
-        traj_guess[t][3] = x_dot_guess
-        traj_guess[t][4] = y_dot_guess
+        if use_rrt: # If RRT use difference in paths
+            diff = (pos.value(t * time_interval) - pos.value((t-1) * time_interval)).T
+            traj_guess[t][3] = diff.T[0]
+            traj_guess[t][4] = diff.T[1]
+        else:
+            traj_guess[t][3] = x_dot_guess
+            traj_guess[t][4] = y_dot_guess
         traj_guess[t][5] = th_dot_guess
     
     #-------------------------- TORQUE INPUT GUESS  --------------------------#
@@ -76,7 +105,7 @@ def get_initial_guess(start, target, duration, time_interval):
     # stack torque guesses
     thrust_guess = np.column_stack((thrust_forces, thrust_headings))
 
-    return traj_guess, thrust_guess
+    return traj_guess, thrust_guess, path_rrt_star
     
 
 def formulate_optimization(environment_name, obstacles):
@@ -153,7 +182,7 @@ def solve_optimization(solver, env_name, obstacles, state_guess=None, thrust_gue
     
     # initial guess
     if state_guess is None and thrust_guess is None:
-        traj_guess, thrust_guess = get_initial_guess(start, target, duration, time_interval)
+        traj_guess, thrust_guess, path_rrt_star = get_initial_guess(start, target, duration, time_interval)
         prog.SetInitialGuess(opt_state, traj_guess)
         prog.SetInitialGuess(opt_thrust, thrust_guess)
     else:
@@ -176,7 +205,7 @@ def solve_optimization(solver, env_name, obstacles, state_guess=None, thrust_gue
         optimal_states = traj_result.GetSolution(opt_state)
         optimal_thrust = traj_result.GetSolution(opt_thrust)
      
-    return optimal_states, optimal_thrust
+    return optimal_states, optimal_thrust, path_rrt_star
 
 
 

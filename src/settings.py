@@ -21,7 +21,7 @@ MAPS = [
 
 # ------------------------------------------------ SIM PARAMS ------------------------------------------------ #
 
-map_name = MAPS[5]                 # map setting
+map_name = MAPS[0]                 # map setting
 duration = 150                     # timesteps (must be bigger than 30 - make this long enough to feasibily traverse your desired trajectory)
 time_interval = 0.5                # time between steps [sec]
 run_optimization = True            # trajectory optimization toggle
@@ -34,8 +34,8 @@ start = [5,                        # x
          0,                        # y_dot
          0]                        # th_dot
 
-target =[-10,                      # x
-         -10,                      # y
+target =[-30,                      # x
+         -30,                      # y
          0,                        # th (always use np.pi never -np.pi)
          0,                        # x_dot
          0,                        # y_dot
@@ -54,9 +54,10 @@ C_front = 0.05                     # forward drag coeff of boat [unitless]
 C_side = 0.4                       # sideways drag coeff of boat [unitless]
 
 boat_points = np.array([[], [], ])
-obstacle_params = np.array([       # define obstacles: [[x_start, y_start]], [x_end, y_end], radius]
-
-                           ])
+obstacle_params = np.array([       # define obstacles: [[x_start, y_start], [x_end, y_end], radius]
+                            [[-10, -15], [-10, -15], 10],
+                            [[0, -60], [0, -60], 10]
+                           ], dtype=object)
 
 
 # ------------------------------------------------ PLOT PARAMS ------------------------------------------------ #
@@ -82,6 +83,8 @@ metric_switches = [0,              # plot x(t)
 
 solver_type = "Ipopt"              # which solver to use: Snope of Ipopt
 two_phase_optimization = False     # True: solve optimization without current first, then solve with current. False: solve directly with current
+use_rrt = True                     # True: Use RRT to get initial path guess, False: Uses straightline path
+rrt_iters = 500                  # More samples is a more optimal path, but takes longer
 thrust_lim = [10000, np.pi/2.75]   # torque limits on force and rudder angle [newtons, radians]
 eps = 0.1                          # smoothing factor, allows differentiability: abs(x) ~ sqrt(x*x + eps)
 
